@@ -5,6 +5,7 @@
 («Узел доступен», «Узел недоступен»). При этом ip-адрес сетевого узла должен создаваться с помощью функции ip_address().
 """
 
+
 from subprocess import Popen, PIPE
 from ipaddress import ip_address
 from tabulate import tabulate
