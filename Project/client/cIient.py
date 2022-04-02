@@ -99,12 +99,13 @@ class ClientReader(threading.Thread, metaclass=ClientVerifier):
 
 
 @log
-def create_presence(account_name):
+def create_presence(account_name, password):
     out = {
         ACTION: PRESENCE,
         TIME: time.time(),
         USER: {
-            ACCOUNT_NAME: account_name
+            ACCOUNT_NAME: account_name,
+            PASSWORD: password
         }
     }
     logger.debug(f'Сформировано {PRESENCE} сообщение для пользователя {account_name}')
@@ -128,11 +129,13 @@ def arg_parser():
     parser.add_argument('addr', default=DEFAULT_IP_ADDR, nargs='?')
     parser.add_argument('port', default=DEFAULT_PORT, type=int, nargs='?')
     parser.add_argument('-n', '--name', default=None, nargs='?')
+    parser.add_argument('-p', '--password', default=None, nargs='?')
+
     namespace = parser.parse_args(sys.argv[1:])
     server_address = namespace.addr
-
     server_port = namespace.port
     client_name = namespace.name
+    client_password = namespace.password
 
     if not 1023 < server_port < 65536:
         logger.critical(
@@ -140,16 +143,17 @@ def arg_parser():
             f'Клиент завершается.')
         exit(1)
 
-    return server_address, server_port, client_name
+    return server_address, server_port, client_name, client_password
 
 
 def main():
     print('Консольный месседжер. Клиентский модуль.')
 
-    server_address, server_port, client_name = arg_parser()
+    server_address, server_port, client_name, client_password = arg_parser()
 
-    if not client_name:
+    while not client_name and not client_password:
         client_name = input('Введите имя пользователя: ')
+        client_password = input('Введите пороль: ')
     else:
         print(f'Клиентский модуль запущен с именем: {client_name}')
 
@@ -160,7 +164,7 @@ def main():
     try:
         transport = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         transport.connect((server_address, server_port))
-        send_message(transport, create_presence(client_name))
+        send_message(transport, create_presence(client_name, client_password))
         answer = process_response_ans(get_message(transport))
         logger.info(f'Установлено соединение с сервером. Ответ сервера: {answer}')
         print(f'Установлено соединение с сервером.')
