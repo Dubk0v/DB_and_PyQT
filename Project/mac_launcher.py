@@ -16,7 +16,7 @@ CLIENTS = []
 SERVER = ''
 PATH_TO_FILE = os.path.dirname(__file__)
 PATH_TO_SCRIPT_SERVER = os.path.join(PATH_TO_FILE, "server/server.py")
-PATH_TO_SCRIPT_CLIENTS = os.path.join(PATH_TO_FILE, "client/cIient.py")
+PATH_TO_SCRIPT_CLIENTS = os.path.join(PATH_TO_FILE, "client/client.py")
 
 while True:
     CHOICE = input(CHOICE_TEXT)
