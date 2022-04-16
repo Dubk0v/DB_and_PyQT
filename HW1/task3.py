@@ -4,6 +4,7 @@
 (использовать модуль tabulate). Таблица должна состоять из двух колонок
 """
 
+
 from subprocess import Popen, PIPE
 from ipaddress import ip_address
 from tabulate import tabulate
