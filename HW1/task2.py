@@ -4,6 +4,7 @@
 По результатам проверки должно выводиться соответствующее сообщение.
 """
 
+
 from subprocess import Popen, PIPE
 from ipaddress import ip_address
 import socket
